@@ -1,13 +1,13 @@
 package com.example.tuan10
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -84,11 +84,15 @@ class MainActivity2 : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("SONG_TITLE", song.title)
             putExtra("SONG_ARTIST", song.artist)
-            putExtra("SONG_PATH", song.path)
         }
+        val intent2 = Intent(this, MyService::class.java).apply {
+            data = song.uri
+        }
+        startService(intent2)
         startActivity(intent)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun loadAndShowSongs() {
         songList = loadSongsFromDevice()
         adapter.updateSongs(songList)
@@ -141,7 +145,7 @@ class MainActivity2 : AppCompatActivity() {
                     Song(
                         title = title,
                         artist = artist,
-                        path = audioUri.toString()
+                        uri = audioUri
                     )
                 )
             }
