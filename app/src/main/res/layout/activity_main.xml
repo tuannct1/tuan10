@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#171022"
+    tools:context=".MainActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#171022"
+        android:padding="24dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Thu nhỏ"
+            android:src="@drawable/ic_arrow_down"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tvSubHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.08"
+            android:text="PHÁT TỪ"
+            android:textColor="#9E96AA"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toTopOf="@id/tvPlaylistName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvPlaylistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bài hát yêu thích"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSubHeader" />
+
+        <ImageButton
+            android:id="@+id/btnRingtone"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Nhạc chờ"
+            android:src="@drawable/ic_ringtone"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/btnMore"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:tint="#FFFFFF" />
+
+        <ImageButton
+            android:id="@+id/btnMore"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Tùy chọn khác"
+            android:src="@drawable/ic_more"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            app:tint="#FFFFFF" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDisc"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:cardBackgroundColor="#241C30"
+            app:cardCornerRadius="125dp"
+            app:cardElevation="12dp"
+            app:layout_constraintBottom_toTopOf="@id/tvSongTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBack"
+            app:strokeWidth="0dp">
+
+            <ImageView
+                android:id="@+id/ivDiscCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Ảnh bìa đĩa nhạc"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <ImageButton
+            android:id="@+id/btnShare"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Chia sẻ"
+            android:src="@drawable/ic_share"
+            app:layout_constraintBottom_toBottomOf="@id/tvArtist"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvSongTitle"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tvSongTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="4dp"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="Em Ổn Không"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvArtist"
+            app:layout_constraintEnd_toStartOf="@id/btnFavorite"
+            app:layout_constraintStart_toEndOf="@id/btnShare" />
+
+        <TextView
+            android:id="@+id/tvArtist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="24dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Trịnh Thiên Ân, ViruSs"
+            android:textColor="#A49CB0"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/seekBar"
+            app:layout_constraintEnd_toStartOf="@id/btnFavorite"
+            app:layout_constraintStart_toEndOf="@id/btnShare" />
+
+        <ImageButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Yêu thích"
+            android:src="@drawable/ic_favorite"
+            app:layout_constraintBottom_toBottomOf="@id/tvArtist"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvSongTitle"
+            app:tint="#9B51E0" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:progressBackgroundTint="#483F56"
+            android:progressTint="#FFFFFF"
+            android:thumbTint="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@id/tvCurrentTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:progress="35" />
+
+        <TextView
+            android:id="@+id/tvCurrentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="0:04"
+            android:textColor="#A49CB0"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/btnPlayPause"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTotalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5:19"
+            android:textColor="#A49CB0"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvCurrentTime"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- ==================== CỤM ĐIỀU KHIỂN PHÁT NHẠC ==================== -->
+        <ImageButton
+            android:id="@+id/btnShuffle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Phát ngẫu nhiên"
+            android:src="@drawable/ic_shuffle"
+            app:layout_constraintBottom_toBottomOf="@id/btnPlayPause"
+            app:layout_constraintEnd_toStartOf="@id/btnPrev"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnPlayPause"
+            app:tint="#9B51E0" />
+
+        <ImageButton
+            android:id="@+id/btnPrev"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Bài trước"
+            android:src="@drawable/ic_prev"
+            app:layout_constraintBottom_toBottomOf="@id/btnPlayPause"
+            app:layout_constraintEnd_toStartOf="@id/btnPlayPause"
+            app:layout_constraintStart_toEndOf="@id/btnShuffle"
+            app:layout_constraintTop_toTopOf="@id/btnPlayPause"
+            app:tint="#FFFFFF" />
+
+        <ImageButton
+            android:id="@+id/btnPlayPause"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/bg_circle_outline"
+            android:contentDescription="Phát hoặc tạm dừng"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toTopOf="@id/tvQuality"
+            app:layout_constraintEnd_toStartOf="@id/btnNext"
+            app:layout_constraintStart_toEndOf="@id/btnPrev"
+            app:tint="#FFFFFF" />
+
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Bài tiếp theo"
+            android:src="@drawable/ic_next"
+            app:layout_constraintBottom_toBottomOf="@id/btnPlayPause"
+            app:layout_constraintEnd_toStartOf="@id/btnRepeat"
+            app:layout_constraintStart_toEndOf="@id/btnPlayPause"
+            app:layout_constraintTop_toTopOf="@id/btnPlayPause"
+            app:tint="#FFFFFF" />
+
+        <ImageButton
+            android:id="@+id/btnRepeat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Lặp lại"
+            android:src="@drawable/ic_repeat"
+            app:layout_constraintBottom_toBottomOf="@id/btnPlayPause"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnNext"
+            app:layout_constraintTop_toTopOf="@id/btnPlayPause"
+            app:tint="#A49CB0" />
+
+        <!-- ==================== HÀNG TIỆN ÍCH DƯỚI CÙNG ==================== -->
+        <ImageButton
+            android:id="@+id/btnComment"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Bình luận"
+            android:src="@drawable/ic_comment"
+            app:layout_constraintBottom_toBottomOf="@id/tvQuality"
+            app:layout_constraintEnd_toStartOf="@id/btnAddPlaylist"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvQuality"
+            app:tint="#A49CB0" />
+
+        <ImageButton
+            android:id="@+id/btnAddPlaylist"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Thêm vào danh sách"
+            android:src="@drawable/ic_add_playlist"
+            app:layout_constraintBottom_toBottomOf="@id/tvQuality"
+            app:layout_constraintEnd_toStartOf="@id/tvQuality"
+            app:layout_constraintStart_toEndOf="@id/btnComment"
+            app:layout_constraintTop_toTopOf="@id/tvQuality"
+            app:tint="#A49CB0" />
+
+        <TextView
+            android:id="@+id/tvQuality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_quality_badge"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="5dp"
+            android:text="128 Kbps"
+            android:textColor="#A49CB0"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnDownload"
+            app:layout_constraintStart_toEndOf="@id/btnAddPlaylist" />
+
+        <ImageButton
+            android:id="@+id/btnDownload"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+
+            android:src="@drawable/ic_download"
+            app:layout_constraintBottom_toBottomOf="@id/tvQuality"
+            app:layout_constraintEnd_toStartOf="@id/btnQueue"
+            app:layout_constraintStart_toEndOf="@id/tvQuality"
+            app:layout_constraintTop_toTopOf="@id/tvQuality"
+            app:tint="#6C0DFB" />
+
+        <ImageButton
+            android:id="@+id/btnQueue"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Danh sách phát"
+            android:src="@drawable/ic_queue"
+            app:layout_constraintBottom_toBottomOf="@id/tvQuality"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnDownload"
+            app:layout_constraintTop_toTopOf="@id/tvQuality"
+            app:tint="#A49CB0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
