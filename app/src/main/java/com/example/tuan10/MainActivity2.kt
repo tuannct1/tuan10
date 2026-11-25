@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -35,7 +36,18 @@ class MainActivity2 : AppCompatActivity() {
                 Toast.makeText(this, "Cần cấp quyền để hiển thị nhạc trong máy", Toast.LENGTH_SHORT).show()
             }
         }
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                Toast.makeText(
+                    this,
+                    "Bạn sẽ không thấy thông báo điều khiển nhạc",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,12 +59,11 @@ class MainActivity2 : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        requestNotificationPermission()
         //Khởi tạo dapter
         adapter = MyAdapter(
             songList = songList,
-            onItemClick = { selectedSong ->
-                openPlayerScreen(selectedSong)
-            },
+            ::openPlayerScreen,
             onMoreClick = { selectedSong ->
                 Toast.makeText(this, "Bài hát: ${selectedSong.title}", Toast.LENGTH_SHORT).show()
             }
@@ -74,6 +85,7 @@ class MainActivity2 : AppCompatActivity() {
             requestPermissionLauncher.launch(permission)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openPlayerScreen(song: Song) {
         currentSong = song
         // Cập nhật tên bài hát lên thanh Mini Player
@@ -88,7 +100,7 @@ class MainActivity2 : AppCompatActivity() {
         val intent2 = Intent(this, MyService::class.java).apply {
             data = song.uri
         }
-        startService(intent2)
+        startForegroundService(intent2)
         startActivity(intent)
     }
 
@@ -151,5 +163,16 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
         return songList
+    }
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val granted = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (!granted) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 }
