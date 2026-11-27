@@ -2,11 +2,15 @@ package com.example.tuan10
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
@@ -25,7 +29,6 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var adapter: MyAdapter
     private var songList: List<Song> = emptyList()
     private var currentSong: Song? = null
-
      private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -53,12 +56,13 @@ class MainActivity2 : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        //Yêu cầu quyền được gửi thông báo
         requestNotificationPermission()
         //Khởi tạo dapter
         adapter = MyAdapter(
@@ -69,20 +73,16 @@ class MainActivity2 : AppCompatActivity() {
             }
         )
         binding.rvSongs.adapter = adapter
-        //Kiểm tra version và lấy permission
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Manifest.permission.READ_MEDIA_AUDIO
-        } else {
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        }
-        //Kiểm tra quyền
-        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+
+        //Kiểm tra quyền nếu đã có thì load songs lên giao diện
+        if (ContextCompat.checkSelfPermission(this, getAudioPermission()) == PackageManager.PERMISSION_GRANTED) {
             binding.layoutPermission.visibility = View.GONE
             loadAndShowSongs()
         }
+
         //Set sự kiện cho xin quyền
         binding.btnGrantPermission.setOnClickListener {
-            requestPermissionLauncher.launch(permission)
+            requestPermissionLauncher.launch(getAudioPermission())
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -92,7 +92,7 @@ class MainActivity2 : AppCompatActivity() {
         binding.tvMiniTitle.text = song.title
         binding.tvMiniArtist.text = song.artist
 
-        // Chuyển sang màn hình phát nhạc đĩa xoay (MainActivity)
+        // Chuyển sang màn hình phát nhạc đĩa xoay
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("SONG_TITLE", song.title)
             putExtra("SONG_ARTIST", song.artist)
@@ -175,4 +175,10 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
     }
+    private fun getAudioPermission(): String =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_AUDIO
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
 }

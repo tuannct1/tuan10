@@ -10,6 +10,7 @@ import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -17,41 +18,64 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
 class MyService : Service() {
-    private lateinit var player: MediaPlayer
+    private var player: MediaPlayer? = null
     private var uri: Uri? = null
-    @SuppressLint("ForegroundServiceType")
+
+    inner class LocalBinder : Binder(){
+        fun getService(): MyService = this@MyService
+    }
+    private val localBinder = LocalBinder()
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        //Tạo channel cấu hình thông báo
+        startMusicForeground()
+        //Lấy uri rồi chạy bài hát
+        uri = intent?.let { intent.data }
+        uri?.let {
+            player?.release()
+            player = MediaPlayer.create(this, it)
+            player?.start()
+        }
+        return START_STICKY
+    }
+
+    override fun onBind(intent: Intent): IBinder = localBinder
+
+    override fun onDestroy() {
+        player?.release()
+        player = null
+        super.onDestroy()
+    }
+    fun playOrResume(){
+        if(player?.isPlaying == false){
+            player?.start()
+        }
+    }
+    fun pause() {
+        if (player?.isPlaying == true) {
+            player?.pause()
+        }
+    }
+    @SuppressLint("ForegroundServiceType")
+    private fun startMusicForeground() {
+        // Tạo channel cấu hình thông báo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("music", "MusicApp", NotificationManager.IMPORTANCE_LOW)
-            //Lấy service quản lý thông báo của hệ điều hành
             val manager = getSystemService(NotificationManager::class.java)
-            //Đăng kí channle
             manager.createNotificationChannel(channel)
         }
-        //Tạo thông báo
-        val notification = NotificationCompat.Builder(this,"music")
+
+        // Tạo thông báo
+        val notification = NotificationCompat.Builder(this, "music")
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentTitle("Phát nhạc")
             .setOngoing(true)
             .build()
-        //Khởi động Foreground
+
+        // Khởi động Foreground
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             startForeground(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
         } else {
             startForeground(1, notification)
         }
-        //Lấy uri rồi chạy bài hát
-        uri = intent?.let { intent.data }
-        uri?.let {
-            if(player.isPlaying){
-                player.release()
-            }
-            player = MediaPlayer.create(this, it)
-            player.start()
-        }
-        return START_STICKY
     }
-
-    override fun onBind(intent: Intent): IBinder? = null
 }
